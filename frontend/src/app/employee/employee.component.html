@@ -13,7 +13,7 @@
     <hr>
 
     <div class="row">
-        <div class="col-md-4" *ngFor="let item of employees; let i = index">
+        <div class="col-md-4" *ngFor="let item of employees$ | async ; let i = index">
             <div class="card mb-3">
                 <div class="card-body">
                     <!-- <h5 class="card-title">{{item.name}}</h5> -->

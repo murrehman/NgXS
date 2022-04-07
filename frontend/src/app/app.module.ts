@@ -10,6 +10,12 @@ import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http'
 import { AuthComponent } from './auth/auth.component';
 import { SingleEmployeeComponent } from './single-employee/single-employee.component';
 
+//NgXS
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { EmployeeState } from './store/state/employee.state';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +29,10 @@ import { SingleEmployeeComponent } from './single-employee/single-employee.compo
     AppRoutingModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxsModule.forRoot([EmployeeState]),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [FormBuilder,
     HttpClient],
