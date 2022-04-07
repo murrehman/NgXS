@@ -1,0 +1,86 @@
+<div class="container py-3">
+    <div class="row">
+        <div class="col col-sm-4 col-md-9">
+            <h4>Employee Management</h4>
+        </div>
+
+        <div class="col col-sm-8 col-md-3 text-right ml-auto">
+            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-plus"></i> Add Employee </button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-4" *ngFor="let item of employees; let i = index">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <!-- <h5 class="card-title">{{item.name}}</h5> -->
+                    <a [routerLink]="['/singleEmployee', item._id]">{{item.name}}</a>
+                    <h6 class="card-subtitle mb-2 text-muted">{{item.position}}</h6>
+                    <span class="badge " [ngClass]="{
+                        'badge-success': item.dept =='Design',
+                        'badge-danger': item.dept =='Development'
+                    }">{{item.dept}}</span>
+                    <hr>
+                    <button type="button" class="btn btn-sm btn-outline-primary mr-2" data-toggle="modal"
+                        data-target="#myModal" (click)="onEditEmployee(item)">Edit</button>
+                    <button type=" button" class="btn btn-sm btn-outline-danger"
+                        (click)="onDeleteEmployee(item._id)">Delete</button>
+                    <!-- PLEASE USE onDeleteEmployee(item._id,i) IF USING FIREBASE -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{editMode? 'Update' : 'Add'}} Employee</h5>
+                <button (click)="onCloseModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+
+
+            </div>
+
+
+            <form [formGroup]="empForm" (ngSubmit)="onEmpSubmit()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Enter Name</label>
+                        <input type="text" class="form-control" formControlName="name">
+                        <small *ngIf="!empForm.get('name')!.valid && empForm.get('name')!.touched"
+                            class="form-text text-danger">Please Enter Name.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Enter position</label>
+                        <input type="text" class="form-control" formControlName="position">
+                        <small *ngIf="!empForm.get('position')!.valid && empForm.get('position')!.touched"
+                            class="form-text text-danger">Please Enter position.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Enter Department</label>
+
+                        <select class="custom-select" formControlName="dept">
+                            <option value="Design">Design</option>
+                            <option value="Development">Development</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="onCloseModal()" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        {{editMode? 'Update Employee' :'Add Employee'}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

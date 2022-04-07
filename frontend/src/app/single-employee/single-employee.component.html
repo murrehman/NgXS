@@ -1,0 +1,12 @@
+<p>single-employee works!</p>
+
+
+<div class="card-body" *ngIf="item">
+    <h5 class="card-title">{{item.name}}</h5>
+    <!-- <a [routerLink]="['/singleEmployee', item._id]">{{item.name}}</a> -->
+    <h6 class="card-subtitle mb-2 text-muted">{{item.position}}</h6>
+    <span class="badge " [ngClass]="{
+    'badge-success': item.dept =='Design',
+    'badge-danger': item.dept =='Development'
+}">{{item.dept}}</span>
+</div>
