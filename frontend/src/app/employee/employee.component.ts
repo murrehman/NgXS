@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { Employee } from '../appModels/employee.model';
 import { EmployeeService } from '../appServices/employee.service';
-import { GetEmployee } from '../store/actions/employee.action';
+import { AddEmployee, DeleteEmployee, GetEmployee, UpdateEmployee } from '../store/actions/employee.action';
 import { EmployeeState } from '../store/state/employee.state';
 
 @Component({
@@ -48,30 +48,38 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
 
     this.empForm = this.fb.group({
+      _id: [''],
       name: ['', Validators.required],
       position: ['', Validators.required],
       dept: ['']
     })
   }
 
+  empValue: any;
+
   onEmpSubmit() {
     if (this.empForm.valid) {
       if (this.editMode) {
-        this.empService.updateEmployee(this.empForm.value).subscribe(res => {
-          console.log(res)
-          this.getEmployees();
-        },
-          err => {
-            console.log(err)
-          })
+        console.log(this.empForm.value);
+
+        this.store.dispatch(new UpdateEmployee(this.empForm.value));
+        // this.empService.updateEmployee(this.empForm.value).subscribe(res => {
+        //   console.log(res)
+        //   this.getEmployees();
+        // },
+        //   err => {
+        //     console.log(err)
+        //   })
       } else {
-        this.empService.addEmployee(this.empForm.value).subscribe(res => {
-          console.log(res)
-          this.getEmployees();
-        },
-          err => {
-            console.log(err)
-          })
+        this.store.dispatch(new AddEmployee(this.empForm.value));
+
+        // this.empService.addEmployee(this.empForm.value).subscribe(res => {
+        //   console.log(res)
+        //   this.getEmployees();
+        // },
+        //   err => {
+        //     console.log(err)
+        //   })
       }
     }
     this.empForm.reset();
@@ -126,14 +134,16 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   //THIS METHOD IF USING CONVENTIONAL NODEJS WITH MONGODB
   onDeleteEmployee(id: any) {
     if (confirm('Do you want to delete this Employee?')) {
-      this.empService.deleteEmployee(id).subscribe((res) => {
-        console.log(res)
-        this.getEmployees();
-        console.log('Deleted Successfully!')
-      },
-        (err) => {
-          console.log(err)
-        })
+      this.store.dispatch(new DeleteEmployee(id))
+
+      // this.empService.deleteEmployee(id).subscribe((res) => {
+      //   console.log(res)
+      //   this.getEmployees();
+      //   console.log('Deleted Successfully!')
+      // },
+      //   (err) => {
+      //     console.log(err)
+      //   })
     }
   }
 
@@ -155,6 +165,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   onEditEmployee(emp: any) {
     console.log(emp)
+    this.empValue = emp;
     this.showModal = true;
     this.editMode = true;
     this.empForm.patchValue(emp)

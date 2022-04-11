@@ -16,7 +16,7 @@ export class EmployeeService {
 
 
   addEmployee(emp: Employee) {
-    return this.http.post(this.url, emp)
+    return this.http.post<Employee>(this.url, emp)
   }
 
   getEmployeeList() {
@@ -25,7 +25,7 @@ export class EmployeeService {
 
   //get single employee
   getEmployeebyId(id: any) {
-    return this.http.get(this.url + `/${id}`)
+    return this.http.get<Employee>(this.url + `/${id}`)
   }
 
 
@@ -35,7 +35,7 @@ export class EmployeeService {
 
 
   updateEmployee(emp: Employee) {
-    return this.http.put(`${this.url}/${emp._id}`, emp)
+    return this.http.put<Employee>(`${this.url}/${emp._id}`, emp)
   }
 
 
