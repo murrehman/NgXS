@@ -1,1 +1,1 @@
-# NgXS
+# Angular State Managment with NgXS
